@@ -1,7 +1,16 @@
-import { useState } from 'react';
+import { useCallback } from 'react';
 import styled, { css } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getKey } from '../../utils';
+
+import { mineKeysSelector } from '../../states/mines/selectors';
+import {
+	gameStatusSelector,
+	gridSelector,
+	selectedCellsSelector,
+} from '../../states/gameState/selectors';
+import { GameStatus } from '../../constants';
+import { setGameStatus, selectCells } from '../../states/gameState/actions';
 
 const StyledGrid = styled.div`
 	display: flex;
@@ -33,74 +42,65 @@ const StyledCell = styled.button`
 	${(props) => props.isMine && mineMixin};
 `;
 
-const countMineAround = (mines, cell) => {
-	const directions = [
-		{ x: -1, y: -1 }, // top left
-		{ x: 0, y: -1 }, // top
-		{ x: 1, y: -1 }, // top right
-		{ x: -1, y: 0 }, // left
-		{ x: 1, y: 0 }, // right
-		{ x: -1, y: 1 }, // bottom left
-		{ x: 0, y: 1 }, // bottom
-		{ x: 1, y: 1 }, // bottom right
-	];
-
-	let count = 0;
-	directions.forEach((item) => {
-		const key = getKey({ x: item.x + cell.x, y: item.y + cell.y });
-
-		if (mines.includes(key)) {
-			count++;
-		}
-	});
-
-	return count;
+const GridCell = ({ id, selected, isMine, mineCount, handleCellSelected }) => {
+	return (
+		<StyledCell
+			selected={selected}
+			isMine={isMine}
+			onClick={handleCellSelected(id)}
+		>
+			{selected && mineCount ? mineCount : null}
+		</StyledCell>
+	);
 };
 
-const GridMines = ({ mines, size }) => {
-	const [selectedCells, setSelectedCells] = useState([]);
+// const MemoCell = memo(GridCell);
 
-	const grid = [];
-	for (let row = 0; row < size; row++) {
-		const rowList = [];
-		for (let col = 0; col < size; col++) {
-			const curCell = { x: col, y: row };
-			const key = getKey(curCell);
-			const selected = selectedCells.includes(key);
-			const isMine = selected && mines.includes(key);
+const GridMines = () => {
+	const grid = useSelector(gridSelector);
 
-			rowList.push({
-				...curCell,
-				key,
-				isMine,
-				selected,
-				mineCount: !isMine ? countMineAround(mines, curCell) : 0,
-			});
-		}
-		grid.push(rowList);
-	}
+	const mines = useSelector(mineKeysSelector);
+	const gameStatus = useSelector(gameStatusSelector);
+	const selectedCells = useSelector(selectedCellsSelector);
+	const dispatch = useDispatch();
 
-	const handleCellSelected = (cell) => () => {
-		const currentCellKey = getKey(cell);
+	const handleCellSelected = useCallback(
+		(currentCellKey) => () => {
+			if (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) {
+				return;
+			}
 
-		if (!selectedCells.includes(currentCellKey)) {
-			setSelectedCells((cells) => [...cells, currentCellKey]);
-		}
-	};
+			// LOSE
+			if (mines.includes(currentCellKey)) {
+				dispatch(selectCells(mines));
+				dispatch(setGameStatus(GameStatus.LOSE));
+				return;
+			}
+
+			if (gameStatus !== GameStatus.PLAYING) {
+				dispatch(setGameStatus(GameStatus.PLAYING));
+			}
+
+			if (!selectedCells.includes(currentCellKey)) {
+				dispatch(selectCells([currentCellKey]));
+			}
+		},
+		[dispatch, mines, selectedCells, gameStatus]
+	);
 
 	return (
 		<StyledGrid>
 			{grid.map((row, index) => (
 				<StyledRow key={index}>
 					{row.map((cell) => (
-						<StyledCell
-							key={cell.key}
+						<GridCell
+							key={cell.id}
+							id={cell.id}
 							selected={cell.selected}
 							isMine={cell.isMine}
-							onClick={handleCellSelected(cell)}
-						>
-							{cell.selected && cell.mineCount ? cell.mineCount : null}
-						</StyledCell>
+							mineCount={cell.mineCount}
+							handleCellSelected={handleCellSelected}
+						/>
 					))}
 				</StyledRow>
 			))}

@@ -8,6 +8,7 @@ module.exports = {
 		'plugin:react/recommended',
 		'plugin:react/jsx-runtime',
 		'plugin:jest/recommended',
+		'plugin:react-hooks/recommended',
 	],
 	parserOptions: {
 		ecmaFeatures: {
@@ -16,13 +17,13 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	plugins: ['react', 'prettier', 'jest'],
+	plugins: ['react', 'prettier', 'jest', 'react-hooks'],
 	rules: {
 		'react/react-in-jsx-scope': 'off',
+		'react/prop-types': 'off',
 		'prettier/prettier': [
 			'error',
 			{
-				printWidth: 80,
 				trailingComma: 'es5',
 				semi: true,
 				jsxSingleQuote: true,

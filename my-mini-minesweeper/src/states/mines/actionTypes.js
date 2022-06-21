@@ -1,0 +1,3 @@
+export const GET_MINES = 'GET_MINES';
+export const GET_MINES_SUCCEEDED = 'GET_MINES_SUCCEEDED';
+export const GET_MINES_FAILED = 'GET_MINES_FAILED';

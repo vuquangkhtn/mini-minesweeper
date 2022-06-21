@@ -8,3 +8,9 @@ export const Level = {
 		mines: 40,
 	},
 };
+
+export const GameStatus = {
+	LOSE: 'LOSE',
+	WIN: 'WIN',
+	PLAYING: 'PLAYING',
+};
