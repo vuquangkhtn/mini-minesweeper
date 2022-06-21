@@ -19,14 +19,17 @@ const getTimeString = (second) => {
 	)}`;
 };
 
-const Timer = () => {
+const Timer = ({ setTime }) => {
 	const [second, setSecond] = useState(0);
 	const intervalRef = useRef();
 	const gameStatus = useSelector(gameStatusSelector);
 
+	const timeString = getTimeString(second);
+
 	useEffect(() => {
 		if (gameStatus !== GameStatus.PLAYING) {
 			intervalRef.current && clearInterval(intervalRef.current);
+			setTime(timeString);
 			return;
 		}
 
@@ -37,9 +40,10 @@ const Timer = () => {
 		return () => {
 			clearInterval(intervalRef.current);
 		};
+		// eslint-disable-next-line
 	}, [gameStatus]);
 
-	return <div>{getTimeString(second)}</div>;
+	return <div>{timeString}</div>;
 };
 
 export default Timer;

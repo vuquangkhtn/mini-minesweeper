@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { mineLoadingSelector } from '../../states/mines/selectors';
@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 `;
 
 const GameScreen = () => {
+	const [time, setTime] = useState('');
 	const mineLoading = useSelector(mineLoadingSelector);
 	const levelType = useSelector(levelSelector);
 	const gameStatus = useSelector(gameStatusSelector);
@@ -34,13 +35,13 @@ const GameScreen = () => {
 
 	return (
 		<Wrapper>
-			<Timer />
+			<Timer setTime={setTime} />
 			<GridMines />
 			{gameStatus === GameStatus.LOSE && (
-				<GamePopup title={'you lost the game'} />
+				<GamePopup title={'you lost the game in ' + time} />
 			)}
 			{gameStatus === GameStatus.WIN && (
-				<GamePopup title={'you won the game'} />
+				<GamePopup title={'you won the game in ' + time} />
 			)}
 		</Wrapper>
 	);
