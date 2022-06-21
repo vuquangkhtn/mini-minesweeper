@@ -6,7 +6,8 @@ module.exports = {
 	extends: [
 		'eslint:recommended',
 		'plugin:react/recommended',
-		'eslint-config-prettier',
+		'plugin:react/jsx-runtime',
+		'plugin:jest/recommended',
 	],
 	parserOptions: {
 		ecmaFeatures: {
@@ -15,7 +16,7 @@ module.exports = {
 		ecmaVersion: 'latest',
 		sourceType: 'module',
 	},
-	plugins: ['react', 'prettier'],
+	plugins: ['react', 'prettier', 'jest'],
 	rules: {
 		'react/react-in-jsx-scope': 'off',
 		'prettier/prettier': [
