@@ -1,9 +1,9 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { render, screen } from '../../testUtils';
+import WelcomeScreen from './index';
 
-describe('App', () => {
+describe('WelcomeScreen', () => {
 	it('should render', () => {
-		render(<App />);
+		render(<WelcomeScreen />);
 		const beginnerButton = screen.getByText('Beginner');
 		const advantageButton = screen.getByText('Advantage');
 		expect(beginnerButton).toBeInTheDocument();

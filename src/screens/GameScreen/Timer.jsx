@@ -28,7 +28,7 @@ const Timer = ({ setTime }) => {
 	const timeString = getTimeString(second);
 
 	useEffect(() => {
-		if (gameStatus !== GameStatus.PLAYING) {
+		if (gameStatus && gameStatus !== GameStatus.PLAYING) {
 			intervalRef.current && clearInterval(intervalRef.current);
 			setTime(timeString);
 			return;
