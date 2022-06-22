@@ -26,49 +26,73 @@ const StyledRow = styled.div`
 
 const GridMines = () => {
 	const grid = useSelector(gridSelector);
-
 	const mines = useSelector(mineKeysSelector);
 	const level = useSelector(levelSelector);
 	const gameStatus = useSelector(gameStatusSelector);
 	const selectedCells = useSelector(selectedCellsSelector);
 	const dispatch = useDispatch();
 
+	const checkLost = useCallback(
+		(id) => {
+			if (mines.includes(id)) {
+				dispatch(selectCells(mines));
+				dispatch(setGameStatus(GameStatus.LOSE));
+				return true;
+			}
+
+			return false;
+		},
+		[dispatch, mines]
+	);
+
+	const checkWon = useCallback(
+		(id) => {
+			if (Level[level].size ** 2 === mines.length + selectedCells.length + 1) {
+				dispatch(selectCells([id]));
+				dispatch(setGameStatus(GameStatus.WIN));
+				return true;
+			}
+
+			return false;
+		},
+		[dispatch, level, mines.length, selectedCells.length]
+	);
+
+	const playingGame = useCallback(
+		(cell) => {
+			if (gameStatus !== GameStatus.PLAYING) {
+				dispatch(setGameStatus(GameStatus.PLAYING));
+			}
+			if (!selectedCells.includes(cell.id)) {
+				if (cell.mineCount === 0) {
+					const exploredCells = exploreCell(grid, cell);
+					dispatch(selectCells(exploredCells));
+				} else {
+					dispatch(selectCells([cell.id]));
+				}
+			}
+		},
+		[dispatch, gameStatus, grid, selectedCells]
+	);
+
 	const handleCellSelected = useCallback(
 		(cell) => () => {
-			const { id, mineCount } = cell;
+			const { id } = cell;
 			if (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) {
 				return;
 			}
 
-			// LOSE
-			if (mines.includes(id)) {
-				dispatch(selectCells(mines));
-				dispatch(setGameStatus(GameStatus.LOSE));
+			if (checkLost(id)) {
 				return;
 			}
 
-			// WIN
-			console.log(mines.length, selectedCells.length);
-			if (Level[level].size ** 2 === mines.length + selectedCells.length + 1) {
-				dispatch(selectCells([id]));
-				dispatch(setGameStatus(GameStatus.WIN));
+			if (checkWon(id)) {
 				return;
 			}
 
-			if (gameStatus !== GameStatus.PLAYING) {
-				dispatch(setGameStatus(GameStatus.PLAYING));
-			}
-
-			if (!selectedCells.includes(id)) {
-				if (mineCount === 0) {
-					const exploredCells = exploreCell(grid, cell);
-					dispatch(selectCells(exploredCells));
-				} else {
-					dispatch(selectCells([id]));
-				}
-			}
+			playingGame(cell);
 		},
-		[dispatch, mines, selectedCells, gameStatus, level, grid]
+		[checkLost, checkWon, playingGame, gameStatus]
 	);
 
 	return (
