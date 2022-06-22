@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
-import { GameStatus } from '../../constants';
 import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { GameStatus } from '../../constants';
 import { gameStatusSelector } from '../../states/gameState/selectors';
 
 const getTimeFormat = (number) => {
@@ -44,6 +45,10 @@ const Timer = ({ setTime }) => {
 	}, [gameStatus]);
 
 	return <div>{timeString}</div>;
+};
+
+Timer.propTypes = {
+	setTime: PropTypes.func,
 };
 
 export default Timer;

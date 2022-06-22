@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const selectedMixin = css`
 	background-color: #ece;
@@ -30,5 +31,9 @@ const GridCell = ({ cell, handleCellSelected }) => {
 	);
 };
 
-// const MemoCell = memo(GridCell);
+GridCell.propTypes = {
+	cell: PropTypes.object,
+	handleCellSelected: PropTypes.func,
+};
+
 export default GridCell;

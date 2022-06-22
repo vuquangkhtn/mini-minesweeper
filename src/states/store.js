@@ -9,5 +9,5 @@ export default configureStore({
 		gameState,
 	},
 	preloadedState: {},
-	devTools: process.env.NODE_ENV !== 'production',
+	devTools: process.env.NODE_ENV !== 'production', // eslint-disable-line
 });

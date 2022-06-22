@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 
 import { mineKeysSelector } from '../../states/mines/selectors';
 import {
@@ -110,11 +109,6 @@ const GridMines = () => {
 			))}
 		</StyledGrid>
 	);
-};
-
-GridMines.propTypes = {
-	mines: PropTypes.arrayOf(String),
-	size: PropTypes.number,
 };
 
 export default GridMines;

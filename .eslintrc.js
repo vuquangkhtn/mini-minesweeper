@@ -20,7 +20,6 @@ module.exports = {
 	plugins: ['react', 'prettier', 'jest', 'react-hooks'],
 	rules: {
 		'react/react-in-jsx-scope': 'off',
-		'react/prop-types': 'off',
 		'prettier/prettier': [
 			'error',
 			{
