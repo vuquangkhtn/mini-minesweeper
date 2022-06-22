@@ -9,8 +9,8 @@ const mineMixin = css`
 `;
 
 const StyledCell = styled.button`
-	width: 20px;
-	height: 20px;
+	width: 40px;
+	height: 40px;
 	border: 1px solid black;
 
 	${(props) => props.selected && selectedMixin};
