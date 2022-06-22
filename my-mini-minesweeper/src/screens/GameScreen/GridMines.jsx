@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -12,6 +12,8 @@ import {
 import { GameStatus, Level } from '../../constants';
 import { setGameStatus, selectCells } from '../../states/gameState/actions';
 import { levelSelector } from '../../states/gameState/selectors';
+import GridCell from './GridCell';
+import { exploreCell } from '../../utils';
 
 const StyledGrid = styled.div`
 	display: flex;
@@ -21,37 +23,6 @@ const StyledGrid = styled.div`
 const StyledRow = styled.div`
 	display: flex;
 `;
-
-const selectedMixin = css`
-	background-color: #ece;
-`;
-
-const mineMixin = css`
-	background-color: #000;
-`;
-
-const StyledCell = styled.button`
-	width: 20px;
-	height: 20px;
-	border: 1px solid black;
-
-	${(props) => props.selected && selectedMixin};
-	${(props) => props.isMine && mineMixin};
-`;
-
-const GridCell = ({ id, selected, isMine, mineCount, handleCellSelected }) => {
-	return (
-		<StyledCell
-			selected={selected}
-			isMine={isMine}
-			onClick={handleCellSelected({ id, mineCount })}
-		>
-			{selected && mineCount ? mineCount : null}
-		</StyledCell>
-	);
-};
-
-// const MemoCell = memo(GridCell);
 
 const GridMines = () => {
 	const grid = useSelector(gridSelector);
@@ -63,34 +34,41 @@ const GridMines = () => {
 	const dispatch = useDispatch();
 
 	const handleCellSelected = useCallback(
-		({ id: currentCellKey }) =>
-			() => {
-				if (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) {
-					return;
-				}
+		(cell) => () => {
+			const { id, mineCount } = cell;
+			if (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) {
+				return;
+			}
 
-				// LOSE
-				if (mines.includes(currentCellKey)) {
-					dispatch(selectCells(mines));
-					dispatch(setGameStatus(GameStatus.LOSE));
-					return;
-				}
+			// LOSE
+			if (mines.includes(id)) {
+				dispatch(selectCells(mines));
+				dispatch(setGameStatus(GameStatus.LOSE));
+				return;
+			}
 
-				// WIN
-				if (Level[level].size ** 2 === mines.length + selectCells.length) {
-					dispatch(setGameStatus(GameStatus.WIN));
-					return;
-				}
+			// WIN
+			console.log(mines.length, selectedCells.length);
+			if (Level[level].size ** 2 === mines.length + selectedCells.length + 1) {
+				dispatch(selectCells([id]));
+				dispatch(setGameStatus(GameStatus.WIN));
+				return;
+			}
 
-				if (gameStatus !== GameStatus.PLAYING) {
-					dispatch(setGameStatus(GameStatus.PLAYING));
-				}
+			if (gameStatus !== GameStatus.PLAYING) {
+				dispatch(setGameStatus(GameStatus.PLAYING));
+			}
 
-				if (!selectedCells.includes(currentCellKey)) {
-					dispatch(selectCells([currentCellKey]));
+			if (!selectedCells.includes(id)) {
+				if (mineCount === 0) {
+					const exploredCells = exploreCell(grid, cell);
+					dispatch(selectCells(exploredCells));
+				} else {
+					dispatch(selectCells([id]));
 				}
-			},
-		[dispatch, mines, selectedCells, gameStatus, level]
+			}
+		},
+		[dispatch, mines, selectedCells, gameStatus, level, grid]
 	);
 
 	return (
@@ -100,10 +78,7 @@ const GridMines = () => {
 					{row.map((cell) => (
 						<GridCell
 							key={cell.id}
-							id={cell.id}
-							selected={cell.selected}
-							isMine={cell.isMine}
-							mineCount={cell.mineCount}
+							cell={cell}
 							handleCellSelected={handleCellSelected}
 						/>
 					))}

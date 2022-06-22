@@ -1,3 +1,4 @@
+import { unique } from '../../utils';
 import * as actionTypes from './actionTypes';
 
 const initialState = {
@@ -28,7 +29,7 @@ const gameStateReducer = (state = initialState, action) => {
 			const { cells } = action.payload;
 			return {
 				...state,
-				selectedCells: [...state.selectedCells, ...cells],
+				selectedCells: unique([...state.selectedCells, ...cells]),
 			};
 		}
 
