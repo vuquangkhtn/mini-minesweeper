@@ -3,7 +3,7 @@ import { selectLevel } from '../../states/gameState/actions';
 
 const WelcomeScreen = () => {
 	const dispatch = useDispatch();
-	const handleLevelClicked = (type) => () => {
+	const handleLevelClicked = (type: LevelType) => () => {
 		dispatch(selectLevel(type));
 	};
 	return (

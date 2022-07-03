@@ -32,10 +32,10 @@ const GridMines = () => {
 	const dispatch = useDispatch();
 
 	const checkLost = useCallback(
-		(id) => {
+		(id: Key) => {
 			if (mines.includes(id)) {
 				dispatch(selectCells(mines));
-				dispatch(setGameStatus(GameStatus.LOSE));
+				dispatch(setGameStatus('LOSE'));
 				return true;
 			}
 
@@ -45,7 +45,9 @@ const GridMines = () => {
 	);
 
 	const checkWon = useCallback(
-		(id) => {
+		(id: string) => {
+			if (!level) return false;
+
 			if (Level[level].size ** 2 === mines.length + selectedCells.length + 1) {
 				dispatch(selectCells([id]));
 				dispatch(setGameStatus(GameStatus.WIN));
@@ -58,7 +60,7 @@ const GridMines = () => {
 	);
 
 	const playingGame = useCallback(
-		(cell) => {
+		(cell: Cell) => {
 			if (gameStatus !== GameStatus.PLAYING) {
 				dispatch(setGameStatus(GameStatus.PLAYING));
 			}
@@ -75,7 +77,7 @@ const GridMines = () => {
 	);
 
 	const handleCellSelected = useCallback(
-		(cell) => () => {
+		(cell: Cell) => () => {
 			const { id } = cell;
 			if (gameStatus === GameStatus.LOSE || gameStatus === GameStatus.WIN) {
 				return;

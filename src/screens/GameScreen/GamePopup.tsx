@@ -1,6 +1,5 @@
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import PropTypes from 'prop-types';
 import { resetGame, selectLevel } from '../../states/gameState/actions';
 
 const Wrapper = styled.div`
@@ -20,7 +19,11 @@ const Wrapper = styled.div`
 	padding: 20px;
 `;
 
-const GamePopup = ({ title }) => {
+interface GamePopupProps {
+	title: string;
+}
+
+const GamePopup = ({ title }: GamePopupProps) => {
 	const dispatch = useDispatch();
 
 	const backToHomepage = () => {
@@ -41,10 +44,6 @@ const GamePopup = ({ title }) => {
 			</div>
 		</Wrapper>
 	);
-};
-
-GamePopup.propTypes = {
-	title: PropTypes.string,
 };
 
 export default GamePopup;

@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
+import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
 
 const selectedMixin = css`
 	background-color: #ece;
@@ -9,7 +10,12 @@ const mineMixin = css`
 	background-color: #000;
 `;
 
-const StyledCell = styled.button`
+interface StyledCell {
+	selected: boolean;
+	isMine: boolean;
+}
+
+const StyledCell = styled.button<StyledCell>`
 	width: 40px;
 	height: 40px;
 	border: 1px solid black;
@@ -18,7 +24,12 @@ const StyledCell = styled.button`
 	${(props) => props.isMine && mineMixin};
 `;
 
-const GridCell = ({ cell, handleCellSelected }) => {
+interface GridCellProps {
+	cell: Cell;
+	handleCellSelected: (cell: Cell) => MouseEventHandler<HTMLButtonElement>;
+}
+
+const GridCell = ({ cell, handleCellSelected }: GridCellProps) => {
 	const { selected, isMine, mineCount } = cell;
 	return (
 		<StyledCell

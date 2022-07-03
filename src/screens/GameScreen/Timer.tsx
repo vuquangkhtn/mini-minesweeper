@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { GameStatus } from '../../constants';
 import { gameStatusSelector } from '../../states/gameState/selectors';
+import { GameStatus } from '../../constants';
 
-const getTimeFormat = (number) => {
+const getTimeFormat = (number: number) => {
 	return number >= 10 ? number : `0${number}`;
 };
 
-const getTimeString = (second) => {
+const getTimeString = (second: number) => {
 	let curSecond = second;
 	const hours = Math.floor(curSecond / 3600);
 	curSecond = curSecond % 3600;
@@ -20,9 +20,13 @@ const getTimeString = (second) => {
 	)}`;
 };
 
-const Timer = ({ setTime }) => {
+interface TimerProps {
+	setTime: (time: string) => void;
+}
+
+const Timer = ({ setTime }: TimerProps) => {
 	const [second, setSecond] = useState(0);
-	const intervalRef = useRef();
+	const intervalRef = useRef<ReturnType<typeof setInterval>>();
 	const gameStatus = useSelector(gameStatusSelector);
 
 	const timeString = getTimeString(second);

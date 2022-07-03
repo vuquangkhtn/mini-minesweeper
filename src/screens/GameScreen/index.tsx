@@ -7,7 +7,7 @@ import {
 	levelSelector,
 } from '../../states/gameState/selectors';
 import { getMines } from '../../states/mines/actions';
-import { Level, GameStatus } from '../../constants';
+import { GameStatus, Level } from '../../constants';
 
 import GridMines from './GridMines';
 import GamePopup from './GamePopup';
