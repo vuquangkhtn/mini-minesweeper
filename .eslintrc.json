@@ -1,38 +1,30 @@
 {
-	"env": {
-		"browser": true,
-		"es2021": true
-	},
-	"extends": [
-		"eslint:recommended",
-		"plugin:react/recommended",
-		"plugin:react/jsx-runtime",
-		"plugin:jest/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:prettier/recommended"
-	],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"ecmaFeatures": {
-			"jsx": true
-		},
-		"ecmaVersion": "latest",
+		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
 	"plugins": [
-		"react",
-		"jest",
+		"@typescript-eslint",
 		"react-hooks"
 	],
+	"extends": [
+		"plugin:react/recommended",
+		"plugin:@typescript-eslint/recommended",
+		"plugin:prettier/recommended"
+	],
 	"rules": {
+		"react-hooks/rules-of-hooks": "error",
+		"react-hooks/exhaustive-deps": "warn",
 		"react/react-in-jsx-scope": "off",
+		"react/prop-types": "off",
 		"prettier/prettier": [
 			"error",
 			{
 				"trailingComma": "es5",
 				"semi": true,
-				"jsxSingleQuote": true,
 				"singleQuote": true,
-				"useTabs": true
+				"useTabs": false
 			}
 		]
 	}

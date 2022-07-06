@@ -1,13 +1,12 @@
 import { AppDispatch } from '../store';
 import * as actionTypes from './actionTypes';
 
-export const getMines = ({
-  size,
-  mines,
-}: {
+type GetMineRequest = {
   size: Number;
   mines: number;
-}): ThunkAction<any, any, any, any> => {
+};
+
+export const getMines = ({ size, mines }: GetMineRequest): any => {
   return async (dispatch: AppDispatch) => {
     dispatch({
       type: actionTypes.GET_MINES,

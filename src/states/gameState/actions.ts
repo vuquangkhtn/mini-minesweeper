@@ -1,5 +1,3 @@
-import { ThunkDispatch, Action } from '@reduxjs/toolkit';
-import { AppDispatch, AppState } from './../store';
 import * as actionTypes from './actionTypes';
 
 export const selectLevel = (level: LevelType) => ({
@@ -9,7 +7,7 @@ export const selectLevel = (level: LevelType) => ({
   },
 });
 
-export const setGameStatus = (status: GameStatusType) => ({
+export const setGameStatus = (status: string | null) => ({
   type: actionTypes.SET_GAME_STATUS,
   payload: {
     status,
