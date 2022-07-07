@@ -36,6 +36,13 @@
       "react-app/jest"
     ]
   },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "babelConfig": true
+      }
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
