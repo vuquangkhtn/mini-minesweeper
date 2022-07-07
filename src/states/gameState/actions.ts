@@ -1,32 +1,32 @@
 import * as actionTypes from './actionTypes';
 
 export const selectLevel = (level: LevelType) => ({
-  type: actionTypes.SELECT_LEVEL,
-  payload: {
-    level,
-  },
+	type: actionTypes.SELECT_LEVEL,
+	payload: {
+		level,
+	},
 });
 
 export const setGameStatus = (status: string | null) => ({
-  type: actionTypes.SET_GAME_STATUS,
-  payload: {
-    status,
-  },
+	type: actionTypes.SET_GAME_STATUS,
+	payload: {
+		status,
+	},
 });
 
 export const selectCells = (cells: Key[]) => ({
-  type: actionTypes.SELECT_CELLS,
-  payload: {
-    cells,
-  },
+	type: actionTypes.SELECT_CELLS,
+	payload: {
+		cells,
+	},
 });
 
 export const clearSelectedCells = () => ({
-  type: actionTypes.CLEAL_SELECTED_CELLS,
+	type: actionTypes.CLEAL_SELECTED_CELLS,
 });
 
 // TODO: update explicit type
 export const resetGame = (): any => (dispatch: any) => {
-  dispatch(setGameStatus(null));
-  dispatch(clearSelectedCells());
+	dispatch(setGameStatus(null));
+	dispatch(clearSelectedCells());
 };

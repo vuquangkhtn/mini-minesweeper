@@ -4,12 +4,12 @@ import mines from './mines/reducer';
 import gameState from './gameState/reducer';
 
 const store = configureStore({
-  reducer: {
-    mines,
-    gameState,
-  },
-  preloadedState: {},
-  devTools: process.env.NODE_ENV !== 'production', // eslint-disable-line
+	reducer: {
+		mines,
+		gameState,
+	},
+	preloadedState: {},
+	devTools: process.env.NODE_ENV !== 'production', // eslint-disable-line
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

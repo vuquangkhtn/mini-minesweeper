@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import PropTypes from 'prop-types';
-import { ButtonHTMLAttributes, MouseEventHandler } from 'react';
+import { MouseEventHandler } from 'react';
 
 const selectedMixin = css`
 	background-color: #ece;

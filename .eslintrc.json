@@ -4,28 +4,19 @@
 		"ecmaVersion": 2018,
 		"sourceType": "module"
 	},
-	"plugins": [
-		"@typescript-eslint",
-		"react-hooks"
-	],
+	"plugins": ["@typescript-eslint", "react-hooks", "react", "jest"],
 	"extends": [
+		"eslint:recommended",
 		"plugin:react/recommended",
+		"plugin:react/jsx-runtime",
 		"plugin:@typescript-eslint/recommended",
-		"plugin:prettier/recommended"
+		"plugin:prettier/recommended",
+		"plugin:jest/recommended"
 	],
 	"rules": {
 		"react-hooks/rules-of-hooks": "error",
 		"react-hooks/exhaustive-deps": "warn",
 		"react/react-in-jsx-scope": "off",
-		"react/prop-types": "off",
-		"prettier/prettier": [
-			"error",
-			{
-				"trailingComma": "es5",
-				"semi": true,
-				"singleQuote": true,
-				"useTabs": false
-			}
-		]
+		"react/prop-types": "off"
 	}
 }
